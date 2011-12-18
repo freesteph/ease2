@@ -1,0 +1,18 @@
+=========
+| Ease  |
+=========
+
+Ease is a simple presentation editor for the GNOME desktop.
+
+======================
+| Build instructions |
+======================
+
+In the root directory, run:
+autoreconf -i
+Then it's the old ./configure; make; make install routine.
+
+The program depends on:
+- gtk+-3.0
+- clutter-1.0
+- clutter-gtk-1.0
