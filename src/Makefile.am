@@ -4,14 +4,14 @@
 
 
 uidir = $(datadir)/ease/ui
-ui_DATA = main.ui
+ui_DATA = ease-main-window.ui
 
 
 AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
-	$(PLATINE_CFLAGS)
+	$(EASE_CFLAGS)
 
 AM_CFLAGS =\
 	 -Wall\
@@ -29,12 +29,16 @@ VALAFLAGS =  \
 bin_PROGRAMS = ease
 
 ease_SOURCES = \
-	ease-main.vala
+	ease-main.vala \
+	ease-main-window.vala \
+	ease-document.vala \
+	ease-slide.vala \
+	ease-element.vala
 
 ease_LDFLAGS = \
 	-Wl,--export-dynamic
 
-ease_LDADD = $(PLATINE_LIBS)
+ease_LDADD = $(EASE_LIBS)
 
 
 EXTRA_DIST = $(ui_DATA)
