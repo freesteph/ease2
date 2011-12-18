@@ -40,7 +40,6 @@ public class Ease.MainWindow {
 		document = new Ease.Document ();
 		document.add_slide ();
 		var s = document.get_current_slide ();
-		s.add_text_element ("Hello", "Mono", 22);
 
 		this.stage.add (s.render ());
 		this.stage.show_all ();
@@ -82,7 +81,10 @@ public class Ease.MainWindow {
 	}
 
 	public void refresh () {
-		// FIXME;
-		return;
+		this.stage.remove_all ();
+		var s = document.get_current_slide ();
+
+		this.stage.add (s.render ());
+		this.stage.show_all ();
 	}
 }

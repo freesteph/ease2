@@ -11,7 +11,7 @@ public class Ease.Slide {
 	}
 
 
-	public void add_text_element (string text, string font, uint size) {
+	public void add_text_element (string text, string font, int size) {
 		var t = new TextElement ();
 		t.text = text;
 		t.font = font;
@@ -37,5 +37,13 @@ public class Ease.Slide {
 		}
 		node.set_array (elements_array);
 		return node;
+	}
+
+	public string to_string () {
+		var res = "";
+		foreach (Ease.Element e in elements) {
+			res += "\n\t" + e.to_string ();
+		}
+		return res;
 	}
 }

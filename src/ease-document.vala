@@ -15,6 +15,7 @@ public class Ease.Document {
 	}
 
 	public Document.from_uri (string uri) {
+		this ();
 		var parser = new Json.Parser ();
 		try {
 			parser.load_from_file (uri);
@@ -26,7 +27,30 @@ public class Ease.Document {
 
 		this.title = root_obj.get_string_member ("title");
 		var slides_array = root_obj.get_array_member ("slides");
-		slides_array.foreach_element ( () => { debug ("lolz"); });
+		slides_array.foreach_element ((array, index, node) =>
+			{
+				this.add_slide ();
+				var slide = this.slides.get (current_slide);
+				var elements_array = node.get_array ();
+				elements_array.foreach_element ((arr, ind, nod) =>
+					{
+						var e = nod.get_object ();
+						switch (e.get_string_member ("type")) {
+						case "text":
+							debug ("size: %i", (int)e.get_int_member ("size"));
+							slide.add_text_element (e.get_string_member ("text"),
+													e.get_string_member ("font"),
+													(int)e.get_int_member ("size"));
+							break;
+						case "image":
+							break;
+						case "video":
+							break;
+						default:
+							break;
+						}
+					});
+			});
 	}
 
 	public void add_slide () {
@@ -73,5 +97,13 @@ public class Ease.Document {
 		}
 
 		return true;
+	}
+
+	public string to_string () {
+		var res = "Document name: " + this.title;
+		for (int i = 0; i < slides.size; i++) {
+			res += @"\n\tSlide n°$(i+1): " + slides.get(i).to_string ();
+		}
+		return res;
 	}
 }

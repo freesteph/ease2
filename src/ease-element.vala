@@ -13,5 +13,6 @@ public abstract class Ease.Element {
 	public Element () {}
 	public abstract Clutter.Actor render ();
 	public abstract Json.Node json ();
+	public abstract string to_string ();
 }
 
