@@ -14,13 +14,13 @@ public class Ease.Document {
 		current_slide  = -1;
 	}
 
-	public Document.from_uri (string uri) {
+	public Document.from_uri (string uri) throws Error {
 		this ();
 		var parser = new Json.Parser ();
 		try {
 			parser.load_from_file (uri);
 		} catch (Error e) {
-			error ("Could not load presentation: " + e.message);
+			throw new Error (1, 0, "Unable to parse JSon project: " + e.message);
 		}
 		var root = parser.get_root ();
 		var root_obj = root.get_object ();

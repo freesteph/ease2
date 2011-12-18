@@ -22,6 +22,12 @@ public class Ease.MainWindow {
 		main_vbox = builder.get_object ("main_vbox") as Gtk.Box;
 
 		builder.connect_signals (this);
+
+		this.window.delete_event.connect ( () =>
+			{
+				Gtk.main_quit ();
+				return true;
+			});
 		/* styling stuff */
 		var settings = Gtk.Settings.get_default ();
 		settings.set ("gtk-application-prefer-dark-theme", true);
@@ -50,10 +56,29 @@ public class Ease.MainWindow {
 	public void open_cb (Gtk.ToolButton button) {
 		var open_dialog = builder.get_object ("open_dialog") as Gtk.FileChooserDialog;
 		if (open_dialog.run () == Gtk.ResponseType.ACCEPT) {
-			this.document = new Document.from_uri (open_dialog.get_filename ());
-			this.refresh ();
+			Document d;
+			try {
+				d = new Document.from_uri (open_dialog.get_filename ());
+				this.load_document (d);
+			} catch (Error e) {
+				var message = "<b>Oops, this does not appear to be" +
+					" a valid presentation file.</b>\n" +
+					"\nThis could be either because your file is badly " +
+					"formatted or because the developers need to get better at " +
+					"programming. Apologies\n" +
+					"\nTry with another file.";
+				var err_dialog = new Gtk.MessageDialog (this.window,
+														Gtk.DialogFlags.MODAL,
+														Gtk.MessageType.ERROR,
+														Gtk.ButtonsType.OK,
+														"");
+				err_dialog.set_markup (message);
+				err_dialog.run ();
+				err_dialog.destroy ();
+				open_cb (button);
+			}
 		}
-		open_dialog.hide ();
+		open_dialog.destroy ();
 	}
 
 	[CCode (instance_pos = -1)]
@@ -66,7 +91,7 @@ public class Ease.MainWindow {
 				this.document.uri = save_dialog.get_filename ();
 				this.document.save ();
 			}
-			save_dialog.hide ();
+			save_dialog.destroy ();
 		}
 	}
 
@@ -77,7 +102,7 @@ public class Ease.MainWindow {
 			this.document.uri = save_dialog.get_filename ();
 			this.document.save ();
 		}
-		save_dialog.hide ();
+		save_dialog.destroy ();
 	}
 
 	public void refresh () {
@@ -86,5 +111,11 @@ public class Ease.MainWindow {
 
 		this.stage.add (s.render ());
 		this.stage.show_all ();
+		this.window.title = "Ease presentation editor: " + this.document.title;
+	}
+
+	public void load_document (Document d) {
+		this.document = d;
+		refresh ();
 	}
 }
