@@ -21,6 +21,7 @@ public class Ease.MainWindow {
 		window = builder.get_object ("main_window") as Gtk.Window;
 		main_vbox = builder.get_object ("main_vbox") as Gtk.Box;
 
+		builder.connect_signals (this);
 		/* styling stuff */
 		var settings = Gtk.Settings.get_default ();
 		settings.set ("gtk-application-prefer-dark-theme", true);
@@ -37,6 +38,23 @@ public class Ease.MainWindow {
 
 	public void run () {
 		document = new Ease.Document ();
+		document.add_slide ();
+		var s = document.get_current_slide ();
+		s.add_text_element ("Hello", "Mono", 22);
+
+		this.stage.add (s.render ());
+		this.stage.show_all ();
+		document.save ();
 		window.show_all ();
+	}
+
+	[CCode (instance_pos = -1)]
+	public void open_cb (Gtk.ToolButton button) {
+		var open_dialog = builder.get_object ("open_dialog") as Gtk.FileChooserDialog;
+		if (open_dialog.run () == Gtk.ResponseType.ACCEPT) {
+			debug ("selected " + open_dialog.get_filename ());
+		} else {
+			debug ("didn't select any file");
+		}
 	}
 }

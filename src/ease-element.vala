@@ -1,9 +1,17 @@
+using Clutter;
+using Json;
 
-abstract class Ease.Element {
+public enum ElementType {
+	TEXT,
+	IMAGE
+}
 
-	public string type;
+public abstract class Ease.Element {
+
+	public ElementType type;
 
 	public Element () {}
 	public abstract Clutter.Actor render ();
+	public abstract Json.Node json ();
 }
 

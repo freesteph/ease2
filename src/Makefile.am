@@ -19,6 +19,7 @@ AM_CFLAGS =\
 
 VALAFLAGS =  \
 	--pkg gtk+-3.0 \
+	--pkg json-glib-1.0 \
 	--pkg clutter-1.0 \
 	--pkg clutter-gtk-1.0 \
 	--pkg gee-1.0 \
@@ -33,7 +34,8 @@ ease_SOURCES = \
 	ease-main-window.vala \
 	ease-document.vala \
 	ease-slide.vala \
-	ease-element.vala
+	ease-element.vala \
+	ease-element-text.vala
 
 ease_LDFLAGS = \
 	-Wl,--export-dynamic

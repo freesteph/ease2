@@ -23,7 +23,7 @@ dnl Check for vala
 AM_PROG_VALAC([0.10.0])
 
 
-PKG_CHECK_MODULES(EASE, [gtk+-3.0 gee-1.0 clutter-gtk-1.0 clutter-1.0])
+PKG_CHECK_MODULES(EASE, [gtk+-3.0 json-glib-1.0 gee-1.0 clutter-gtk-1.0 clutter-1.0])
 
 
 AC_OUTPUT([
