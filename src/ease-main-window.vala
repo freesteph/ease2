@@ -44,7 +44,6 @@ public class Ease.MainWindow {
 
 		this.stage.add (s.render ());
 		this.stage.show_all ();
-		document.save ();
 		window.show_all ();
 	}
 
@@ -52,9 +51,38 @@ public class Ease.MainWindow {
 	public void open_cb (Gtk.ToolButton button) {
 		var open_dialog = builder.get_object ("open_dialog") as Gtk.FileChooserDialog;
 		if (open_dialog.run () == Gtk.ResponseType.ACCEPT) {
-			debug ("selected " + open_dialog.get_filename ());
-		} else {
-			debug ("didn't select any file");
+			this.document = new Document.from_uri (open_dialog.get_filename ());
+			this.refresh ();
 		}
+		open_dialog.hide ();
+	}
+
+	[CCode (instance_pos = -1)]
+	public void save_cb (Gtk.ToolButton button) {
+		if (this.document.uri != "") {
+			this.document.save ();
+		} else {
+			var save_dialog = builder.get_object ("save_dialog") as Gtk.FileChooserDialog;
+			if (save_dialog.run () == Gtk.ResponseType.ACCEPT) {
+				this.document.uri = save_dialog.get_filename ();
+				this.document.save ();
+			}
+			save_dialog.hide ();
+		}
+	}
+
+	[CCode (instance_pos = -1)]
+	public void save_as_cb (Gtk.ToolButton button) {
+		var save_dialog = builder.get_object ("save_dialog") as Gtk.FileChooserDialog;
+		if (save_dialog.run () == Gtk.ResponseType.ACCEPT) {
+			this.document.uri = save_dialog.get_filename ();
+			this.document.save ();
+		}
+		save_dialog.hide ();
+	}
+
+	public void refresh () {
+		// FIXME;
+		return;
 	}
 }
